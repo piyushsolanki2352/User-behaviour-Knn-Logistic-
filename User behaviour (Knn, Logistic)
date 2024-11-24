@@ -1,0 +1,117 @@
+# User-behaviour-(Knn-Logistic)-
+
+import pandas as pd
+a = pd.read_csv("/content/user_behavior_dataset.csv")
+# print(a.head)
+
+from sklearn.preprocessing import LabelEncoder
+le = LabelEncoder()
+a['Gender'] = le.fit_transform(a['Gender'])
+a['Operating System'] = le.fit_transform(a['Operating System'])
+x = a[["User ID","Battery Drain (mAh/day)","Screen On Time (hours/day)","Age","Operating System","Number of Apps Installed","Data Usage (MB/day)","Gender"]]
+y = a["User Behavior Class"]
+# print(x)
+# print(y)
+
+from sklearn.model_selection import train_test_split
+x_train,x_test,y_train,y_test = train_test_split(x,y,test_size=0.2,random_state=0)
+
+from sklearn.neighbors import KNeighborsClassifier
+model = KNeighborsClassifier(n_neighbors=5)
+model.fit(x_train,y_train)
+y_pred = model.predict(x_test)
+print(y_pred)
+
+from sklearn import metrics
+cnf_matrix = metrics.confusion_matrix(y_test,y_pred)
+print(cnf_matrix)
+
+from sklearn.metrics import accuracy_score
+accuracy=accuracy_score(y_test,y_pred)
+print("accuracy = ",accuracy)
+
+from sklearn.metrics import precision_score
+precision = precision_score(y_test,y_pred, average='macro')
+print("precision = ",precision)
+
+from sklearn.metrics import recall_score
+recall = recall_score(y_test,y_pred, average='macro')
+print("recall = ",recall)
+
+from sklearn.metrics import f1_score
+f1 = f1_score(y_test,y_pred, average='macro')
+print("f1 = ",f1)
+
+import matplotlib.pyplot as plt
+class_names= [0,1]
+fig,ax = plt.subplots()
+tick_marks = np.arange(len(class_names))
+plt.xticks(tick_marks,class_names)
+plt.yticks(tick_marks,class_names)
+
+import seaborn as sns
+sns.heatmap(pd.DataFrame(cnf_matrix),annot=True,cmap="Blues",fmt="d",annot_kws={"size":10})
+ax.xaxis.set_label_position("bottom")
+plt.tight_layout()
+plt.title("confusion matrix", y=1.4)
+plt.xlabel('actual label')
+plt.xlabel('predicated labels')
+
+
+
+import pandas as pd
+a = pd.read_csv("/content/user_behavior_dataset.csv")
+# print(a.head)
+
+from sklearn.preprocessing import LabelEncoder
+le = LabelEncoder()
+a['Gender'] = le.fit_transform(a['Gender'])
+a['Operating System'] = le.fit_transform(a['Operating System'])
+x = a[["User ID","Battery Drain (mAh/day)","Screen On Time (hours/day)","Age","Operating System","Number of Apps Installed","Data Usage (MB/day)","Gender"]]
+y = a["User Behavior Class"]
+# print(x)
+# print(y)
+
+from sklearn.model_selection import train_test_split
+x_train,x_test,y_train,y_test = train_test_split(x,y,test_size=0.2,random_state=0)
+
+from sklearn.linear_model import LogisticRegression
+model = LogisticRegression()
+model.fit(x_train,y_train)
+y_pred = model.predict(x_test)
+print(y_pred)
+
+from sklearn import metrics
+cnf_matrix = metrics.confusion_matrix(y_test,y_pred)
+print(cnf_matrix)
+
+from sklearn.metrics import accuracy_score
+accuracy=accuracy_score(y_test,y_pred)
+print("accuracy = ",accuracy)
+
+from sklearn.metrics import precision_score
+precision = precision_score(y_test,y_pred, average='macro')
+print("precision = ",precision)
+
+from sklearn.metrics import recall_score
+recall = recall_score(y_test,y_pred, average='macro')
+print("recall = ",recall)
+
+from sklearn.metrics import f1_score
+f1 = f1_score(y_test,y_pred, average='macro')
+print("f1 = ",f1)
+
+import matplotlib.pyplot as plt
+class_names= [0,1]
+fig,ax = plt.subplots()
+tick_marks = np.arange(len(class_names))
+plt.xticks(tick_marks,class_names)
+plt.yticks(tick_marks,class_names)
+
+import seaborn as sns
+sns.heatmap(pd.DataFrame(cnf_matrix),annot=True,cmap="Reds",fmt="d",annot_kws={"size":10})
+ax.xaxis.set_label_position("bottom")
+plt.tight_layout()
+plt.title("confusion matrix", y=1.4)
+plt.xlabel('actual label')
+plt.xlabel('predicated labels')
